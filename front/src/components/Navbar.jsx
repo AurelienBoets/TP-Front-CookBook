@@ -11,7 +11,7 @@ const Navbar = () => {
             className="navbar-brand text-white"
             onClick={() => navigate("/")}
           >
-            CookBook
+            CooKBooK
           </span>
           <div className="collapse navbar-collapse">
             <ul
@@ -23,7 +23,13 @@ const Navbar = () => {
               <li className="nav-item ms-4">Ajouter une recette</li>
             </ul>
           </div>
-          <span className="float-end">Connexion</span>
+          <span
+            className="float-end"
+            style={{ cursor: "pointer" }}
+            onClick={() => navigate("/auth")}
+          >
+            Connexion
+          </span>
         </div>
       </nav>
       <Outlet />
