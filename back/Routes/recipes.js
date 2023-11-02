@@ -44,3 +44,5 @@ recipes.delete("/:id", authMiddleware, (req, res) => {
   recipeDao.remove(req.params.id);
   res.sendStatus(204);
 });
+
+export default recipes;
