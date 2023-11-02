@@ -1,6 +1,6 @@
 import express from "express";
-import ingredients from "./Routes/ingredients";
-import recipes from "./Routes/recipes";
+import ingredients from "./Routes/ingredients.js";
+import recipes from "./Routes/recipes.js";
 
 const app = express();
 app.use("/ingredients", ingredients);
