@@ -4,6 +4,7 @@ import Home from "./routes/Home";
 import RecipeDetails from "./routes/RecipeDetails";
 import Auth from "./routes/Auth";
 import DashBoard from "./routes/admin/DashBoard";
+import RecipeForm from "./routes/admin/RecipeForm";
 
 const isLogged = () => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -35,6 +36,11 @@ const router = createBrowserRouter([
       {
         path: "/dashboard",
         element: <DashBoard />,
+        loader: () => isLogged(),
+      },
+      {
+        path: "/recipes/form",
+        element: <RecipeForm />,
         loader: () => isLogged(),
       },
     ],

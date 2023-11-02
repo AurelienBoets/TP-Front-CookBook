@@ -23,6 +23,7 @@ const Navbar = () => {
           <span
             className="navbar-brand text-white"
             onClick={() => navigate("/")}
+            style={{ cursor: "pointer" }}
           >
             CooKBooK
           </span>
@@ -39,7 +40,12 @@ const Navbar = () => {
                   >
                     Gestion
                   </li>
-                  <li className="nav-item ms-4">Ajouter une recette</li>
+                  <li
+                    className="nav-item ms-4"
+                    onClick={() => navigate("/recipes/form")}
+                  >
+                    Ajouter une recette
+                  </li>
                 </>
               ) : (
                 ""

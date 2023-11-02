@@ -40,11 +40,7 @@ const RecipeDetails = () => {
           <div className="col-5">
             <span>Instructions</span>
             <hr />
-            <ol>
-              {recipe.instructions.map((instruction) => (
-                <li>{instruction}</li>
-              ))}
-            </ol>
+            <p>{recipe.instructions}</p>
           </div>
         </div>
       </div>
