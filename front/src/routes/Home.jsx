@@ -22,7 +22,6 @@ const Home = () => {
         <div className="col-1"></div>
         <div className="col-10 bg-dark text-light p-3 rounded">
           <span className="h5">Liste des recettes</span>
-          <span className="float-end btn btn-success">Ajouter</span>
           <hr />
           {recipes.map((recipe) => (
             <div className="rounded border border-info">

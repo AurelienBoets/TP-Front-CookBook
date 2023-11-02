@@ -33,7 +33,12 @@ const Navbar = () => {
             >
               {person !== "" ? (
                 <>
-                  <li className="nav-item">Gestion</li>
+                  <li
+                    className="nav-item"
+                    onClick={() => navigate("/dashboard")}
+                  >
+                    Gestion
+                  </li>
                   <li className="nav-item ms-4">Ajouter une recette</li>
                 </>
               ) : (
