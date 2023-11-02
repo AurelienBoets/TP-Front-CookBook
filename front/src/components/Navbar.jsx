@@ -1,7 +1,20 @@
+import { useEffect, useState } from "react";
 import { useNavigate, Outlet } from "react-router-dom";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const [person, setPerson] = useState("");
+  const logout = () => {
+    localStorage.removeItem("user");
+    setPerson("");
+    navigate("/");
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem("user")) {
+      setPerson(JSON.parse(localStorage.getItem("user")));
+    }
+  }, [localStorage.getItem("user")]);
 
   return (
     <main>
@@ -18,18 +31,33 @@ const Navbar = () => {
               className="navbar-nav me-auto mb-2 mb-lg-0"
               style={{ cursor: "pointer" }}
             >
-              <li className="nav-item">Gestion</li>
-
-              <li className="nav-item ms-4">Ajouter une recette</li>
+              {person !== "" ? (
+                <>
+                  <li className="nav-item">Gestion</li>
+                  <li className="nav-item ms-4">Ajouter une recette</li>
+                </>
+              ) : (
+                ""
+              )}
             </ul>
           </div>
-          <span
-            className="float-end"
-            style={{ cursor: "pointer" }}
-            onClick={() => navigate("/auth")}
-          >
-            Connexion
-          </span>
+          {person === "" ? (
+            <span
+              className="float-end"
+              style={{ cursor: "pointer" }}
+              onClick={() => navigate("/auth")}
+            >
+              Connexion
+            </span>
+          ) : (
+            <span
+              className="float-end"
+              style={{ cursor: "pointer" }}
+              onClick={() => logout()}
+            >
+              Déconnexion
+            </span>
+          )}
         </div>
       </nav>
       <Outlet />

@@ -15,8 +15,14 @@ const Login = () => {
       })
       .then((resp) => {
         if (resp.status === 204) {
-          localStorage.setItem("username", username.current.value);
-          localStorage.setItem("mdp", mdp.current.value);
+          localStorage.setItem(
+            "user",
+            JSON.stringify({
+              username: username.current.value,
+              mdp: mdp.current.value,
+            })
+          );
+
           navigate("/");
         }
       })
