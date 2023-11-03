@@ -6,7 +6,6 @@ import FormIngredient from "../../components/admin/FormIngredient";
 
 const RecipeForm = () => {
   const [ingredients, setIngredients] = useState([]);
-
   const [selectedIngredients, setSelectedIngredients] = useState([
     { ingredient: "", unit: "", quantity: "" },
   ]);
@@ -33,7 +32,6 @@ const RecipeForm = () => {
   const handleClose = () => setShow(false);
 
   const handleShow = () => setShow(true);
-  console.log(show);
 
   const handleAddSelectedIngredients = () => {
     setSelectedIngredients([
@@ -52,9 +50,34 @@ const RecipeForm = () => {
     const { value } = e.target;
     const list = [...selectedIngredients];
     list[index][type] = value;
-    console.log(list);
     setSelectedIngredients(list);
   };
+
+  async function addRecipe(e) {
+    e.preventDefault();
+    const user = JSON.parse(localStorage.getItem("user"));
+    const recipe = {
+      name: name.current.value,
+      cookTime: cookTime.current.value,
+      prepTime: prepTime.current.value,
+      ingredients: selectedIngredients,
+      instructions: instructions.current.value,
+    };
+
+    axios
+      .post("http://127.0.0.1:3000/recipes", recipe, {
+        auth: {
+          username: user.username,
+          password: user.mdp,
+        },
+      })
+      .then(() => {
+        navigate("/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
   if (isLoading) {
     return <></>;
@@ -65,7 +88,7 @@ const RecipeForm = () => {
       <div className="col-1"></div>
       <div className="col-10 bg-dark text-light rounded p-3">
         <h5>{"Ajouter une recette"}</h5>
-        <form>
+        <form onSubmit={addRecipe}>
           <div className="mb-2">
             <label htmlFor="name" className="form-label">
               Nom
@@ -128,7 +151,9 @@ const RecipeForm = () => {
                   }
                 >
                   {ingredients.map((ingredient) => (
-                    <option value={ingredient.id}>{ingredient.name}</option>
+                    <option value={ingredient.id} key={ingredient.id}>
+                      {ingredient.name}
+                    </option>
                   ))}
                 </select>
                 <input

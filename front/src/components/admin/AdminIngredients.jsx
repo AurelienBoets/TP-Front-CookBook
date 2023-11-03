@@ -37,7 +37,7 @@ const AdminIngredients = () => {
     <div className="mt-1">
       <h5>Ingrédients</h5>
       {ingredients.map((ingredient) => (
-        <div className="border" key={ingredient.id}>
+        <div className="border pb-3" key={ingredient.id}>
           <span>{ingredient.name}</span>
           <span className="float-end btn btn-warning">Modifier</span>
           <span

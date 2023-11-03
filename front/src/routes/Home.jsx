@@ -24,7 +24,7 @@ const Home = () => {
           <span className="h5">Liste des recettes</span>
           <hr />
           {recipes.map((recipe) => (
-            <div className="rounded border border-info">
+            <div className="rounded border border-info mb-2" key={recipe.id}>
               <span>{recipe.name}</span>
               <hr />
               <span className="d-block">

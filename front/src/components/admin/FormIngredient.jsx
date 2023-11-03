@@ -29,14 +29,18 @@ const FormIngredient = (props) => {
   };
   return (
     <>
-      <form onSubmit={addIngredient}>
+      <form>
         <div className="mb-2">
           <label htmlFor="name" className="form-label">
             Nom de l'ingrédient
           </label>
           <input type="text" className="form-control" ref={name} />
         </div>
-        <button type="submit" className="btn btn-success">
+        <button
+          onClick={addIngredient}
+          className="btn btn-success"
+          type="button"
+        >
           Ajouter
         </button>
       </form>

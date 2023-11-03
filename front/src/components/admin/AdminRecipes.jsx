@@ -35,16 +35,19 @@ const AdminRecipes = () => {
     <div className="mt-1">
       <h5>Recettes</h5>
       {recipes.map((recipe) => (
-        <div className="border" key={recipe.id}>
-          <span>{recipe.name}</span>
-          <span className="float-end btn btn-warning">Modifier</span>
-          <span
-            className="float-end btn btn-danger"
-            onClick={() => remove(recipe.id)}
-          >
-            Supprimer
-          </span>
-        </div>
+        <>
+          <div className="border pb-3" key={recipe.id}>
+            <span>{recipe.name}</span>
+            <span className="float-end btn btn-warning">Modifier</span>
+            <span
+              className="float-end btn btn-danger"
+              onClick={() => remove(recipe.id)}
+            >
+              Supprimer
+            </span>
+          </div>
+          <br />
+        </>
       ))}
     </div>
   );
