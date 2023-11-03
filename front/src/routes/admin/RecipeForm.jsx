@@ -1,21 +1,17 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Modal from "react-bootstrap/Modal";
 import axios from "axios";
+import FormIngredient from "../../components/admin/FormIngredient";
 
 const RecipeForm = () => {
   const [ingredients, setIngredients] = useState([]);
-  const [recipe, setRecipe] = useState({
-    name: "",
-    prepTime: "",
-    cookTime: "",
-    instructions: "",
-    selectedIngredients: [],
-  });
+
   const [selectedIngredients, setSelectedIngredients] = useState([
-    { ingredient: "" },
+    { ingredient: "", unit: "", quantity: "" },
   ]);
   const [isLoading, setLoading] = useState(true);
-  const [searchParam] = useSearchParams();
+  const [show, setShow] = useState(false);
   const navigate = useNavigate();
   const name = useRef();
   const prepTime = useRef();
@@ -23,16 +19,6 @@ const RecipeForm = () => {
   const instructions = useRef();
   let i = 0;
   useEffect(() => {
-    if (searchParam.get("mode") === "edit" && searchParam.get("id") !== "") {
-      axios
-        .get(`http://127.0.0.1:3000/recipes/${searchParam.get("id")}`)
-        .then((resp) => {
-          setRecipe(resp.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
     axios
       .get("http://127.0.0.1:3000/ingredients")
       .then((resp) => {
@@ -44,18 +30,31 @@ const RecipeForm = () => {
     setLoading(false);
   }, [ingredients]);
 
-  const handleAddSelectedIngredients = (a) => {
-    setSelectedIngredients([...selectedIngredients, { ingredient: a }]);
+  const handleClose = () => setShow(false);
+
+  const handleShow = () => setShow(true);
+  console.log(show);
+
+  const handleAddSelectedIngredients = () => {
+    setSelectedIngredients([
+      ...selectedIngredients,
+      { ingredient: "", unit: "", quantity: "" },
+    ]);
   };
 
   const handleRemoveSelectedIngredients = (index) => {
     let list = [...selectedIngredients];
     list.splice(index, 1);
     setSelectedIngredients(list);
-    console.log(list);
   };
 
-  const handleChangeSelectedIngredients = () => {};
+  const handleChangeSelectedIngredients = (e, index, type) => {
+    const { value } = e.target;
+    const list = [...selectedIngredients];
+    list[index][type] = value;
+    console.log(list);
+    setSelectedIngredients(list);
+  };
 
   if (isLoading) {
     return <></>;
@@ -65,11 +64,7 @@ const RecipeForm = () => {
     <div className="mt-3 row">
       <div className="col-1"></div>
       <div className="col-10 bg-dark text-light rounded p-3">
-        <h5>
-          {searchParam.get("mode") === "edit"
-            ? `Modifier la recette ${recipe.name}`
-            : "Ajouter une recette"}
-        </h5>
+        <h5>{"Ajouter une recette"}</h5>
         <form>
           <div className="mb-2">
             <label htmlFor="name" className="form-label">
@@ -104,19 +99,52 @@ const RecipeForm = () => {
               ref={cookTime}
             />
           </div>
-          <div className="mb2">
+          <div className="mb-2">
             <label htmlFor="ingredients" className="form-label">
               Ingrédients
             </label>
+            <button
+              className="btn btn-primary"
+              type="button"
+              onClick={handleShow}
+            >
+              Ajouter un ingrédient
+            </button>
+            <Modal show={show} onHide={handleClose}>
+              <Modal.Header closeButton>
+                <Modal.Title>Ajout ingrédient</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <FormIngredient close={handleClose}></FormIngredient>
+              </Modal.Body>
+            </Modal>
             {selectedIngredients.map((selectedIngredient, index) => (
               <div key={index}>
-                <select name="ingredients">
+                <select
+                  name="ingredients"
+                  value={selectedIngredient.ingredient}
+                  onChange={(e) =>
+                    handleChangeSelectedIngredients(e, index, "ingredient")
+                  }
+                >
                   {ingredients.map((ingredient) => (
                     <option value={ingredient.id}>{ingredient.name}</option>
                   ))}
                 </select>
-                <input type="number" placeholder="quantité" />
-                <select>
+                <input
+                  type="number"
+                  placeholder="quantité"
+                  value={selectedIngredient.quantity}
+                  onChange={(e) =>
+                    handleChangeSelectedIngredients(e, index, "quantity")
+                  }
+                />
+                <select
+                  value={selectedIngredient.unit}
+                  onChange={(e) =>
+                    handleChangeSelectedIngredients(e, index, "unit")
+                  }
+                >
                   <option value="g">g</option>
                   <option value="cl">cl</option>
                   <option value="c.à soupe">c.à soupe</option>
@@ -137,9 +165,24 @@ const RecipeForm = () => {
               onClick={() => handleAddSelectedIngredients(i++)}
               type="button"
             >
-              Ajouter un ingrédient
+              +
             </button>
           </div>
+          <div className="mb-2">
+            <label htmlFor="instructions" className="form-label">
+              Instructions
+            </label>
+            <br />
+            <textarea
+              ref={instructions}
+              name="instructions"
+              cols="80"
+              rows="10"
+            ></textarea>
+          </div>
+          <button type="submit" className="btn btn-success">
+            Valider
+          </button>
         </form>
       </div>
     </div>
